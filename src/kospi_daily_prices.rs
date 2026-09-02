@@ -1,0 +1,17 @@
+// 1	기준일자	BAS_DD	string()
+// 2	종목코드	ISU_CD	string()
+// 3	종목명	ISU_NM	string()
+// 4	시장구분	MKT_NM	string()
+// 5	소속부	SECT_TP_NM	string()
+// 6	종가	TDD_CLSPRC	string()
+// 7	대비	CMPPREVDD_PRC	string()
+// 8	등락률	FLUC_RT	string()
+// 9	시가	TDD_OPNPRC	string()
+// 10	고가	TDD_HGPRC	string()
+// 11	저가	TDD_LWPRC	string()
+// 12	거래량	ACC_TRDVOL	string()
+// 13	거래대금	ACC_TRDVAL	string()
+// 14	시가총액	MKTCAP	string()
+// 15	상장주식수	LIST_SHRS	string()
+
+const URL: &str = "https://data-dbg.krx.co.kr/svc/apis/sto/stk_bydd_trd";
