@@ -2,13 +2,13 @@ use ratelimit::Ratelimiter;
 
 use crate::KrxOpenApiError;
 
-pub struct KrxOpenApiClientConfig {
+pub struct Builder {
 	_auth_key: String,
 	_rate: u64,
 	_rate_initial_available: u64,
 	_rate_period: std::time::Duration,
 }
-impl KrxOpenApiClientConfig {
+impl Builder {
 	pub fn auth_key(mut self, auth_key: String) -> Self {
 		self._auth_key = auth_key;
 		self
@@ -36,7 +36,7 @@ impl KrxOpenApiClientConfig {
 		Ok(client)
 	}
 }
-impl Default for KrxOpenApiClientConfig {
+impl Default for Builder {
 	fn default() -> Self {
 		Self {
 			_auth_key: String::new(),
@@ -55,7 +55,7 @@ pub struct KrxOpenApiClient {
 }
 
 impl KrxOpenApiClient {
-	pub fn builder() -> KrxOpenApiClientConfig {
-		KrxOpenApiClientConfig::default()
+	pub fn builder() -> Builder {
+		Builder::default()
 	}
 }
