@@ -4,7 +4,7 @@ use chrono::NaiveDate;
 use ratelimit::TryWaitError;
 use serde::Deserialize;
 
-use crate::KrxOpenApiClient;
+use crate::{KrxOpenApiClient, KrxOpenApiError};
 
 #[derive(Debug, Deserialize)]
 pub struct KospiItemInfo {
@@ -66,7 +66,7 @@ struct ResponsePayload {
 const URL: &str = "https://data-dbg.krx.co.kr/svc/apis/sto/stk_isu_base_info";
 
 impl KrxOpenApiClient {
-	pub async fn fetch_kospi_items_info(&self, base_date: NaiveDate) -> Result<Vec<KospiItemInfo>, Box<dyn std::error::Error>> {
+	pub async fn fetch_kospi_items_info(&self, base_date: NaiveDate) -> Result<Vec<KospiItemInfo>, KrxOpenApiError> {
 		while let Err(TryWaitError::Insufficient(dur)) = self.ratelimiter.try_wait() {
 			tokio::time::sleep(dur).await;
 		}
@@ -74,7 +74,8 @@ impl KrxOpenApiClient {
 		let params = [
 			("basDd", base_date.format("%Y%m%d").to_string()),
 		];
-		let url = reqwest::Url::parse_with_params(URL, &params)?;
+		let url = reqwest::Url::parse_with_params(URL, &params)
+			.map_err(|e| KrxOpenApiError { message: e.to_string() })?;
 		log::debug!("Fetching KospiItemsInfo from {}", url);
 
 		let resp = self.client.get(url)
